@@ -5,4 +5,11 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorWrite">#ffffff</color>
     <color name="colorBlack">#000000</color>
+
+
+    <color name="transparent">#00000000</color>
+    <color name="text_title">#333333</color> <!-- 标题类文本字体颜色 -->
+    <color name="text_content">#484848</color> <!-- 内容文本字体颜色 -->
+    <color name="text_summary">#808080</color> <!-- 第二内容文本字体颜色 -->
+    <color name="text_disable">#cccccc</color> <!-- 不可点击时文本颜色 -->
 </resources>

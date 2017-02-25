@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+
+    <!-- 头部分 -->
+    <RelativeLayout
+        android:id="@+id/rl_activity_base_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_size"
+        android:background="@color/colorPrimary"
+        >
+
+        <ImageView
+            android:id="@+id/iv_title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_back_2_selector"
+            />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="精品托班"
+            android:textColor="@color/text_title"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_menu2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/fl_title_menu_1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center"
+            android:textColor="@color/title_menu_text"
+            android:visibility="gone"
+            />
+
+        <FrameLayout
+            android:id="@+id/fl_title_menu_1"
+            android:layout_width="@dimen/action_bar_size"
+            android:layout_height="@dimen/action_bar_size"
+            android:layout_alignParentRight="true"
+            >
+
+            <TextView
+                android:id="@+id/tv_title_menu1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/title_menu_text"
+                android:duplicateParentState="true"
+                />
+
+            <ImageView
+                android:id="@+id/iv_title_menu1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:duplicateParentState="true"
+                />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <!-- 内容部分 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_network_fail" />
+
+        <include
+            layout="@layout/progress_loading_view"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/iv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWrite"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            />
+
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+        </FrameLayout>
+    </RelativeLayout>
+</LinearLayout>

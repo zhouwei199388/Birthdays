@@ -1,42 +1,79 @@
 package com.zw.birthdays;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
+import com.zw.birthdays.base.BaseTitleActivity;
+import com.zw.birthdays.birthday.BirthdayFragment;
+import com.zw.birthdays.setting.SettingFragment;
 import com.zw.birthdays.view.BottomNavigationBar;
+import com.zw.birthdays.view.CustomViewPager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by lenovo on 2017/2/24.
  */
 
-public class MainActivity extends Activity implements BottomNavigationBar.onSelectedChangeListener {
-    private BottomNavigationBar mNavigationBar;
-
+public class MainActivity extends BaseTitleActivity implements BottomNavigationBar.onSelectedChangeListener {
+    @BindView(R.id.bottomNavigationBar)
+    public BottomNavigationBar mNavigationBar;
+    @BindView(R.id.customViewPager)
+    public CustomViewPager mCustomViewPager;
+    private String[] mBottomNavigationStrings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        mBottomNavigationStrings = getResources().getStringArray(R.array.BottomNavigationStrings);
         initView();
     }
 
     private void initView() {
-        mNavigationBar = (BottomNavigationBar) findViewById(R.id.bottomNavigationBar);
-        mNavigationBar.addItem(R.drawable.ic_launcher, "列表")
-                .addItem(R.drawable.ic_launcher, "我的")
-                .addItem(R.drawable.ic_launcher, "发现")
-                .addItem(R.drawable.ic_launcher, "视频")
-                .addItem(R.drawable.ic_launcher, "附近")
+        setTitleText(mBottomNavigationStrings[0]);
+        setNoBack();
+        mNavigationBar.addItem(R.drawable.icon_birthday_selector, mBottomNavigationStrings[0])
+                .addItem(R.drawable.icon_setting_selector, mBottomNavigationStrings[1])
                 .initTab();
-
         mNavigationBar.setOnChangeListener(this);
+        mCustomViewPager.setAdapter(new MainAdapter(getSupportFragmentManager()));
+        mCustomViewPager.setScrollEnable(false);
     }
-
 
     @Override
     public void onSelect(int position) {
-        TextView textView = (TextView) findViewById(R.id.tv_test);
-        textView.setText("Hello World" + position);
+        setTitleText(mBottomNavigationStrings[position]);
+        mCustomViewPager.setCurrentItem(position);
+    }
+
+
+    static class MainAdapter extends FragmentPagerAdapter {
+        public MainAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+            switch (position) {
+                case 0:
+                    fragment = new BirthdayFragment();
+                    break;
+                case 1:
+                    fragment = new SettingFragment();
+                    break;
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 }
