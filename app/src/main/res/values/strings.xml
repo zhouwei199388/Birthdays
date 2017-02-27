@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Birthdays</string>
+    <string name="birthday">出生日期</string>
+    <string name="sex">性别</string>
+    <string name="name">姓名</string>
+    <string name="input_name">输入姓名</string>
+    <string name="select_birthday">选择日期</string>
 </resources>

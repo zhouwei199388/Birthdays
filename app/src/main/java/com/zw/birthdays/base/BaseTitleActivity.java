@@ -173,6 +173,10 @@ public class BaseTitleActivity extends AppCompatActivity {
         mImageMenuView1.setImageResource(resId);
     }
 
+    protected void hideMenuView() {
+        mMenuView1.setVisibility(View.GONE);
+    }
+
     /**
      * 显示菜单是否可用
      *
