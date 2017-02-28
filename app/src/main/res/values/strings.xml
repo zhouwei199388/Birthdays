@@ -5,4 +5,7 @@
     <string name="name">姓名</string>
     <string name="input_name">输入姓名</string>
     <string name="select_birthday">选择日期</string>
+    <string name="btn_save">保存</string>
+    <string name="toast_warn">请填写姓名</string>
+    <string name="toast_success">保存成功</string>
 </resources>

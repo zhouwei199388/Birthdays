@@ -4,14 +4,23 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <ImageView
+    <com.zw.birthdays.view.CircleImageView
         android:id="@+id/iv_head"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"/>
+    <ImageView
+        android:id="@+id/iv_add_head"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@drawable/icon_add_head"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"/>
+
 
 
     <RelativeLayout
@@ -25,12 +34,14 @@
             android:layout_height="wrap_content"
             android:text="@string/name"/>
 
-        <TextView
+        <EditText
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
-            android:text="@string/input_name"/>
+            android:gravity="center_vertical"
+            android:background="@null"
+            android:hint="@string/input_name"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -69,14 +80,38 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/birthday"/>
+            android:text="@string/sex"/>
 
-        <TextView
-            android:id="@+id/tv_sex"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/rg_sex"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:text="@string/select_birthday"/>
+            android:orientation="horizontal"
+            android:layout_marginLeft="100dp">
+            <RadioButton
+                android:id="@+id/rb_man"
+                android:text="男"
+                android:layout_width="wrap_content"
+                android:checked="true"
+                android:layout_height="wrap_content"/>
+            <RadioButton
+                android:id="@+id/rb_woman"
+                android:text="女"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"/>
+        </RadioGroup>
     </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/btn_save"/>
+
 
 </LinearLayout>

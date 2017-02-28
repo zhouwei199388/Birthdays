@@ -1,17 +1,26 @@
 package com.zw.birthdays.birthday;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.activeandroid.query.Select;
 import com.zw.birthdays.R;
+import com.zw.birthdays.bean.UserBean;
+import com.zw.birthdays.utils.TimeUtil;
+import com.zw.birthdays.utils.ToastUtil;
 import com.zw.birthdays.view.CircleImageView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +33,9 @@ public class BirthdayFragment extends Fragment {
 
     @BindView(R.id.recyclerView)
     public RecyclerView mRecyclerView;
+
+    List<UserBean> mUserBeans;
+    private MyAdapter myAdapter;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +52,23 @@ public class BirthdayFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new MyAdapter());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),1));
+        myAdapter = new MyAdapter();
+        mRecyclerView.setAdapter(myAdapter);
+        getData();
     }
 
+    public void getData(){
+          if(mUserBeans==null){
+              mUserBeans = new Select().from(UserBean.class).execute();
+          }else{
+              mUserBeans.clear();
+              List<UserBean> beans = new Select().from(UserBean.class).execute();
+              ToastUtil.showToast(getContext(),beans.size()+"");
+              mUserBeans.addAll(beans);
+          }
+        myAdapter.notifyDataSetChanged();
+    }
 
     class MyAdapter extends RecyclerView.Adapter<MyHolder>{
         @Override
@@ -53,12 +79,16 @@ public class BirthdayFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyHolder holder, int position) {
-
+         holder.tv_name.setText(mUserBeans.get(position).userName);
+         holder.tv_calendar.setText(TimeUtil.getDate(mUserBeans.get(position).birthdayTime));
+            if(mUserBeans.get(position).headImgUrl != null){
+                holder.circleImageView.setImageURI(Uri.parse(mUserBeans.get(position).headImgUrl));
+            }
         }
 
         @Override
         public int getItemCount() {
-            return 12;
+            return mUserBeans==null?0:mUserBeans.size();
         }
     }
 

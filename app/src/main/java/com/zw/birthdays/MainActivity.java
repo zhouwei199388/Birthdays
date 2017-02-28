@@ -13,6 +13,9 @@ import com.zw.birthdays.setting.SettingFragment;
 import com.zw.birthdays.view.BottomNavigationBar;
 import com.zw.birthdays.view.CustomViewPager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -21,11 +24,17 @@ import butterknife.ButterKnife;
  */
 
 public class MainActivity extends BaseTitleActivity implements BottomNavigationBar.onSelectedChangeListener {
+    private static final int ADD_BIRTHDAY_REQUEST_CODE = 0001;
     @BindView(R.id.bottomNavigationBar)
     public BottomNavigationBar mNavigationBar;
     @BindView(R.id.customViewPager)
     public CustomViewPager mCustomViewPager;
     private String[] mBottomNavigationStrings;
+
+
+//    List<Fragment> mFragments = new ArrayList<>();
+     private BirthdayFragment birthdayFragment;
+     private SettingFragment settingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +64,7 @@ public class MainActivity extends BaseTitleActivity implements BottomNavigationB
     @Override
     protected void onMenuClick() {
         super.onMenuClick();
-        startActivity(new Intent(this, AddBirthdayActivity.class));
+        startActivityForResult(new Intent(this, AddBirthdayActivity.class),ADD_BIRTHDAY_REQUEST_CODE);
     }
 
     @Override
@@ -78,23 +87,34 @@ public class MainActivity extends BaseTitleActivity implements BottomNavigationB
     }
 
 
-    static class MainAdapter extends FragmentPagerAdapter {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(ADD_BIRTHDAY_REQUEST_CODE == requestCode && resultCode == RESULT_OK){
+
+            if(birthdayFragment!=null){
+                birthdayFragment.getData();
+            }
+        }
+    }
+
+    class MainAdapter extends FragmentPagerAdapter {
         public MainAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = null;
+//            Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = new BirthdayFragment();
-                    break;
+                    birthdayFragment = new BirthdayFragment();
+                    return birthdayFragment;
                 case 1:
-                    fragment = new SettingFragment();
-                    break;
+                    settingFragment = new SettingFragment();
+                    return settingFragment;
             }
-            return fragment;
+            return null;
         }
 
         @Override
