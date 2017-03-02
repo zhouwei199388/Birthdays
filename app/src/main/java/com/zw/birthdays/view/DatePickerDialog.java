@@ -36,9 +36,9 @@ public class DatePickerDialog extends Dialog {
             }
 
             @Override
-            public void onConfirmClick(long time) {
+            public void onConfirmClick(long time,boolean isLunar) {
                 if (mSelectDateListener != null) {
-                    mSelectDateListener.onSelectDate(time);
+                    mSelectDateListener.onSelectDate(time,isLunar);
                 }
                 dismiss();
             }
@@ -58,7 +58,7 @@ public class DatePickerDialog extends Dialog {
     }
 
     public interface OnSelectDateListener{
-        void onSelectDate(long time);
+        void onSelectDate(long time,boolean isLunar);
 	}
 	
 	private OnSelectDateListener mSelectDateListener;

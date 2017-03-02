@@ -17,6 +17,7 @@ import com.yanzhenjie.album.Album;
 import com.zw.birthdays.R;
 import com.zw.birthdays.base.BaseTitleActivity;
 import com.zw.birthdays.bean.UserBean;
+import com.zw.birthdays.utils.LunarCalendar;
 import com.zw.birthdays.utils.TimeUtil;
 import com.zw.birthdays.utils.ToastUtil;
 import com.zw.birthdays.view.CircleImageView;
@@ -47,6 +48,7 @@ public class AddBirthdayActivity extends BaseTitleActivity {
     RadioGroup mSexRg;
     private Bitmap mHeadBitmap = null;
     private UserBean mUserBean;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,18 +61,18 @@ public class AddBirthdayActivity extends BaseTitleActivity {
         mSexRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                ToastUtil.showToast(getApplicationContext(),""+checkedId);
-                if(checkedId==R.id.rb_man){
+                ToastUtil.showToast(getApplicationContext(), "" + checkedId);
+                if (checkedId == R.id.rb_man) {
                     mUserBean.sex = 0;
-                }else if(checkedId == R.id.rb_woman){
+                } else if (checkedId == R.id.rb_woman) {
                     mUserBean.sex = 1;
                 }
             }
         });
     }
 
-    @OnClick({R.id.iv_add_head,R.id.iv_head})
-    public void selectHeadImg(){
+    @OnClick({R.id.iv_add_head, R.id.iv_head})
+    public void selectHeadImg() {
         Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO
                 , 1                                                         // 指定选择数量。
                 , ContextCompat.getColor(this, R.color.colorPrimary)        // 指定Toolbar的颜色。
@@ -78,13 +80,19 @@ public class AddBirthdayActivity extends BaseTitleActivity {
     }
 
     @OnClick(R.id.tv_birthday)
-    public void selectBirthday(){
-        DatePickerDialog pickerDialog = new DatePickerDialog(this,System.currentTimeMillis(),"请选择出生日期");
+    public void selectBirthday() {
+        DatePickerDialog pickerDialog = new DatePickerDialog(this, System.currentTimeMillis(), "请选择出生日期");
         pickerDialog.setSelectDateListener(new DatePickerDialog.OnSelectDateListener() {
             @Override
-            public void onSelectDate(long time) {
+            public void onSelectDate(long time, boolean isLunar) {
                 mUserBean.birthdayTime = time;
-                String date = TimeUtil.getDate(time);
+                mUserBean.isLunar = isLunar;
+                String date;
+                if (isLunar) {
+                    date = LunarCalendar.getLunarData(time);
+                } else {
+                    date = TimeUtil.getDate(time);
+                }
                 mBirthdayTv.setText(date);
             }
         });
@@ -94,11 +102,11 @@ public class AddBirthdayActivity extends BaseTitleActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==ACTIVITY_REQUEST_SELECT_PHOTO&&resultCode == RESULT_OK){
+        if (requestCode == ACTIVITY_REQUEST_SELECT_PHOTO && resultCode == RESULT_OK) {
             List<String> pathList = Album.parseResult(data);
-            if(pathList.size()==0){
-                ToastUtil.showToast(this,"获取失败！");
-            }else{
+            if (pathList.size() == 0) {
+                ToastUtil.showToast(this, "获取失败！");
+            } else {
                 mUserBean.headImgUrl = pathList.get(0);
                 mHeadBitmap = BitmapFactory.decodeFile(pathList.get(0));
                 mAddHeadIv.setVisibility(View.GONE);
@@ -107,17 +115,18 @@ public class AddBirthdayActivity extends BaseTitleActivity {
             }
         }
     }
+
     @OnClick(R.id.btn_save)
-    public void save(){
+    public void save() {
         String name = mNameEt.getText().toString();
-        if(!TextUtils.isEmpty(name)){
+        if (!TextUtils.isEmpty(name)) {
             mUserBean.userName = name;
             mUserBean.save();
             setResult(RESULT_OK);
             finish();
-            ToastUtil.showToast(this,R.string.toast_success);
-        }else{
-            ToastUtil.showToast(this,R.string.toast_warn);
+            ToastUtil.showToast(this, R.string.toast_success);
+        } else {
+            ToastUtil.showToast(this, R.string.toast_warn);
         }
 
     }

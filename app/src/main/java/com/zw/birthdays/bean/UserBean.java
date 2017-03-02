@@ -8,7 +8,7 @@ import com.activeandroid.annotation.Table;
  * Created by lenovo on 2017/2/28.
  */
 @Table(name = "UserBean")
-public class UserBean extends Model{
+public class UserBean extends Model {
     @Column(name = "userName")
     public String userName;
     @Column(name = "headUrl")
@@ -17,4 +17,6 @@ public class UserBean extends Model{
     public long birthdayTime;
     @Column(name = "sex")//0:男  1：女
     public int sex;
+    @Column(name = "isLunar")//true:农历  false:公历
+    public boolean isLunar;
 }

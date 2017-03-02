@@ -3,7 +3,10 @@ package com.zw.birthdays.view;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.OnValueChangeListener;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 
 
 import com.zw.birthdays.R;
+import com.zw.birthdays.utils.LunarCalendar;
+import com.zw.birthdays.utils.ToastUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +43,8 @@ public class DateTimePicker extends FrameLayout {
 
     private TextView mCustomTitleView;
 
+    private boolean isLunar = false;
+
     public void setOnValueChangeListener(ValueChangeListener listener) {
         this.listener = listener;
     }
@@ -47,7 +54,7 @@ public class DateTimePicker extends FrameLayout {
 
         void onCancelClick();
 
-        void onConfirmClick(long time);
+        void onConfirmClick(long time, boolean isLunar);
     }
 
     public DateTimePicker(Context context, String title) {
@@ -104,7 +111,21 @@ public class DateTimePicker extends FrameLayout {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onConfirmClick(getResultTime());
+                    listener.onConfirmClick(getResultTime(), isLunar);
+                }
+            }
+        });
+
+        CheckBox checkBox = (CheckBox) findViewById(R.id.cb_is_lunar);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                System.out.println(isChecked);
+                isLunar = isChecked;
+                if (isChecked) {
+                    setSettingDate(LunarCalendar.solarToLunarString(year, month + 1, day));
+                } else {
+                    setSettingDate(LunarCalendar.lunarToSolarString(year, month + 1, day, true));
                 }
             }
         });
@@ -112,6 +133,7 @@ public class DateTimePicker extends FrameLayout {
 
     /**
      * 设置日期选择器的起始显示时间
+     *
      * @param time 时间 ms
      */
     public void setTime(long time) {
@@ -129,6 +151,7 @@ public class DateTimePicker extends FrameLayout {
 
     /**
      * 设置日期
+     *
      * @param date
      */
     public void setSettingDate(String date) {
@@ -146,10 +169,13 @@ public class DateTimePicker extends FrameLayout {
             setDayDisplayName();
             mNumPickerDay.setValue(day - 1);
         } catch (ParseException e) {
-            Log.d(TAG,e.toString());
+            Log.d(TAG, e.toString());
         }
     }
 
+    /**
+     * 获取最大年限
+     */
     private void getMaxYear() {
         if (mDate == null) {
             mDate = Calendar.getInstance();
@@ -157,14 +183,19 @@ public class DateTimePicker extends FrameLayout {
         maxYear = mDate.get(Calendar.YEAR);
     }
 
+    /**
+     * 获取最小年限
+     */
     private void getMinYear() {
         if (mDate == null) {
             mDate = Calendar.getInstance();
         }
-        //15岁已经很大了吧
         minYear = mDate.get(Calendar.YEAR) - 100;
     }
 
+    /**
+     * 设置年
+     */
     private void setYearDisplayName() {
         String[] yearDisplayName = new String[maxYear - minYear + 1];
         for (int t = minYear, i = 0; t <= maxYear; t++, i++) {
@@ -173,6 +204,9 @@ public class DateTimePicker extends FrameLayout {
         mNumPickerYear.setDisplayedValues(yearDisplayName);
     }
 
+    /**
+     * 设置月
+     */
     private void setMonthDisplayName() {
         int value = 12;
         mNumPickerMonth.setDisplayedValues(null);
@@ -181,13 +215,21 @@ public class DateTimePicker extends FrameLayout {
             // mNumPickerMonth.setValue(value - 1);
         }
         String[] monthDisplayName = new String[value];
+//        String[] monthDisplayName = lunarMonth;
         mNumPickerMonth.setMaxValue(value - 1);
         for (int i = 0; i < monthDisplayName.length; i++) {
-            monthDisplayName[i] = (i + 1) + " 月";
+            if (isLunar) {
+                monthDisplayName[i] = LunarCalendar.getLunarMonthName(i + 1) + "月";
+            } else {
+                monthDisplayName[i] = (i + 1) + " 月";
+            }
         }
         mNumPickerMonth.setDisplayedValues(monthDisplayName);
     }
 
+    /**
+     * 设置日
+     */
     private void setDayDisplayName() {
         month = mNumPickerMonth.getValue();
         mNumPickerDay.setDisplayedValues(null);
@@ -206,11 +248,18 @@ public class DateTimePicker extends FrameLayout {
         String[] dayDisplayName = new String[value];
 
         for (int i = 0; i < dayDisplayName.length; i++) {
-            dayDisplayName[i] = (i + 1) + " 日";
+            if (isLunar) {
+                dayDisplayName[i] = LunarCalendar.getLunarDayName(i + 1);
+            } else {
+                dayDisplayName[i] = (i + 1) + " 日";
+            }
         }
         mNumPickerDay.setDisplayedValues(dayDisplayName);
     }
 
+    /**
+     * 年Picker改变监听
+     */
     private OnValueChangeListener mOnYearChangeListener = new OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -222,7 +271,9 @@ public class DateTimePicker extends FrameLayout {
             }
         }
     };
-
+    /**
+     * 月Picker改变监听
+     */
     private OnValueChangeListener mOnMonthChangeListener = new OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -232,7 +283,9 @@ public class DateTimePicker extends FrameLayout {
             }
         }
     };
-
+    /**
+     * 日Picker改变监听
+     */
     private OnValueChangeListener mOnDayChangeListener = new OnValueChangeListener() {
         @SuppressWarnings("unused")
         private OnValueChangeListener mOnDayChangeListener = new OnValueChangeListener() {
@@ -241,7 +294,6 @@ public class DateTimePicker extends FrameLayout {
                                       int newVal) {
                 day = picker.getValue() + 1;
                 if (listener != null) {
-                    listener.onValueChangeListener();
                 }
             }
         };

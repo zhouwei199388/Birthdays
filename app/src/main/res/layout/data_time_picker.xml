@@ -7,8 +7,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:paddingLeft="16dp"
         android:background="#ff9598"
+        android:paddingLeft="16dp"
         >
 
         <TextView
@@ -16,29 +16,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorWrite"
             android:text="请选择宝宝生日"
+            android:textColor="@color/colorWrite"
             />
 
-        <ImageView
-            android:id="@+id/iv_cancel"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_toLeftOf="@+id/iv_confirm"
-            android:src="@drawable/ic_dialog_cancel"
-            android:scaleType="centerInside"
-            />
-
-        <ImageView
-            android:id="@+id/iv_confirm"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+        <CheckBox
+            android:id="@+id/cb_is_lunar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_dialog_confirm"
-            android:scaleType="centerInside"
-            />
-
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="农历"/>
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,4 +57,44 @@
             android:layout_weight="0.3"
             android:focusable="false"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_summary"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWrite">
+
+        <TextView
+            android:id="@+id/iv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="取消"
+            android:textSize="18dp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/text_summary"></View>
+
+        <TextView
+            android:id="@+id/iv_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="确定"
+            android:textSize="18dp"/>
+    </LinearLayout>
+
 </LinearLayout>
