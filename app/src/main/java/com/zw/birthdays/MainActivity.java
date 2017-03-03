@@ -32,9 +32,8 @@ public class MainActivity extends BaseTitleActivity implements BottomNavigationB
     private String[] mBottomNavigationStrings;
 
 
-//    List<Fragment> mFragments = new ArrayList<>();
-     private BirthdayFragment birthdayFragment;
-     private SettingFragment settingFragment;
+    private BirthdayFragment birthdayFragment;
+    private SettingFragment settingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +63,14 @@ public class MainActivity extends BaseTitleActivity implements BottomNavigationB
     @Override
     protected void onMenuClick() {
         super.onMenuClick();
-        startActivityForResult(new Intent(this, AddBirthdayActivity.class),ADD_BIRTHDAY_REQUEST_CODE);
+        startActivityForResult(new Intent(this, AddBirthdayActivity.class), ADD_BIRTHDAY_REQUEST_CODE);
     }
 
+    /**
+     * navigation选择回调接口
+     *
+     * @param position
+     */
     @Override
     public void onSelect(int position) {
         setTitleText(mBottomNavigationStrings[position]);
@@ -75,24 +79,24 @@ public class MainActivity extends BaseTitleActivity implements BottomNavigationB
     }
 
     /**
-     *  控制menu控件显示
+     * 控制menu控件显示
+     *
      * @param isShow
      */
-    private void showMenu(boolean isShow){
-        if(isShow){
+    private void showMenu(boolean isShow) {
+        if (isShow) {
             setMenu1Image(R.drawable.icon_add_selector);
-        }else{
+        } else {
             hideMenuView();
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(ADD_BIRTHDAY_REQUEST_CODE == requestCode && resultCode == RESULT_OK){
+        if (ADD_BIRTHDAY_REQUEST_CODE == requestCode && resultCode == RESULT_OK) {
 
-            if(birthdayFragment!=null){
+            if (birthdayFragment != null) {
                 birthdayFragment.getData();
             }
         }
@@ -105,7 +109,6 @@ public class MainActivity extends BaseTitleActivity implements BottomNavigationB
 
         @Override
         public Fragment getItem(int position) {
-//            Fragment fragment = null;
             switch (position) {
                 case 0:
                     birthdayFragment = new BirthdayFragment();

@@ -8,7 +8,6 @@ import java.util.GregorianCalendar;
  * 工具类，实现公农历互转
  */
 public class LunarCalendar {
-
     /**
      * 支持转换的最小农历年份
      */
@@ -154,11 +153,13 @@ public class LunarCalendar {
 
 
     /**
-     * @param year
-     * @param month
-     * @param monthDay
-     * @param isLeapMonth
-     * @return
+     * 将农历日期转换为公历日期字符串
+     *
+     * @param year        农历年份
+     * @param month       农历月
+     * @param monthDay    农历日
+     * @param isLeapMonth 该月是否是闰月
+     *                    [url=home.php?mod=space&uid=7300]@return[/url] 返回农历日期对应的公历日期，year0, month1, day2.
      */
     public static String lunarToSolarString(int year, int month, int monthDay,
                                             boolean isLeapMonth) {

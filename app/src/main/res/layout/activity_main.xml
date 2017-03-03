@@ -8,11 +8,11 @@
         android:id="@+id/customViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></com.zw.birthdays.view.CustomViewPager>
+        android:layout_weight="1"/>
 
     <com.zw.birthdays.view.BottomNavigationBar
         android:id="@+id/bottomNavigationBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.zw.birthdays.view.BottomNavigationBar>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

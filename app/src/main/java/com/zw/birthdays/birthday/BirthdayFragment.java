@@ -1,5 +1,9 @@
 package com.zw.birthdays.birthday;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +12,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +21,13 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.zw.birthdays.R;
 import com.zw.birthdays.bean.UserBean;
+import com.zw.birthdays.receiver.OneShotAlarm;
 import com.zw.birthdays.utils.LunarCalendar;
 import com.zw.birthdays.utils.TimeUtil;
 import com.zw.birthdays.utils.ToastUtil;
 import com.zw.birthdays.view.CircleImageView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,6 +40,7 @@ import butterknife.OnClick;
 
 public class BirthdayFragment extends Fragment {
 
+    private static final String TAG = BirthdayFragment.class.getSimpleName();
     @BindView(R.id.recyclerView)
     public RecyclerView mRecyclerView;
 
@@ -59,6 +67,7 @@ public class BirthdayFragment extends Fragment {
         myAdapter = new MyAdapter();
         mRecyclerView.setAdapter(myAdapter);
         getData();
+        sendAlarmReceiver();
     }
 
     public void getData() {
@@ -95,7 +104,7 @@ public class BirthdayFragment extends Fragment {
             } else {
                 holder.tv_calendar.setText(TimeUtil.getDate(userBean.birthdayTime));
             }
-            holder.tv_differDay.setText(TimeUtil.getDifferDay(userBean.birthdayTime, userBean.isLunar)+"");
+            holder.tv_differDay.setText(TimeUtil.getDifferDay(userBean.birthdayTime, userBean.isLunar) + "");
         }
 
         @Override
@@ -119,6 +128,18 @@ public class BirthdayFragment extends Fragment {
             tv_age = (TextView) itemView.findViewById(R.id.tv_age);
             tv_differDay = (TextView) itemView.findViewById(R.id.tv_time);
         }
+    }
+
+
+    private void sendAlarmReceiver() {
+        Intent intent = new Intent(getActivity(), OneShotAlarm.class);
+        PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 100);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        Log.d(TAG, "sendAlarmReceiver: ");
     }
 
 

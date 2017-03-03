@@ -23,6 +23,9 @@ import com.zw.birthdays.utils.ToastUtil;
 import com.zw.birthdays.view.CircleImageView;
 import com.zw.birthdays.view.DatePickerDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -69,6 +72,7 @@ public class AddBirthdayActivity extends BaseTitleActivity {
                 }
             }
         });
+
     }
 
     @OnClick({R.id.iv_add_head, R.id.iv_head})
@@ -128,6 +132,5 @@ public class AddBirthdayActivity extends BaseTitleActivity {
         } else {
             ToastUtil.showToast(this, R.string.toast_warn);
         }
-
     }
 }
